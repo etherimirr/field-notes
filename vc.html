@@ -1,0 +1,103 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+:root{--bg:#f7f5f1;--card:#fffefb;--ink:#25211d;--soft:#7d7369;--gold:#a8792f;--accent:#b5552f;--line:#e5ddd1;--ok:#3a8f5c;--warn:#b33a2b}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14120f;--card:#1e1a16;--ink:#ebe3d7;--soft:#9c9084;--gold:#d3a04b;--accent:#dd7048;--line:#352d25;--ok:#5cbd80;--warn:#e0705c}}
+*{box-sizing:border-box}
+body{margin:0 auto;max-width:820px;padding:26px 18px 70px;background:var(--bg);color:var(--ink);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC",sans-serif}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(181,85,47,.3)}
+a:hover{border-bottom-color:var(--accent)}
+h1{font-size:26px;margin:0 0 4px;letter-spacing:.4px}
+h2{font-size:19px;color:var(--gold);margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:15.5px;margin:20px 0 6px;color:var(--accent)}
+.sub{color:var(--soft);font-size:13px;margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:11px 0;font-size:13.5px}
+.hl{border:2px solid var(--gold);background:rgba(168,121,47,.07)}
+.warn{border:2px solid var(--warn);background:rgba(179,58,43,.07)}
+.ok{border-left:4px solid var(--ok);background:rgba(58,143,92,.07)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+td,th{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{color:var(--gold);font-size:11.5px;font-weight:600}
+code{background:rgba(125,115,105,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 26px}
+.nav a{border:1px solid var(--line);border-radius:9px;padding:7px 13px;font-size:13px;background:var(--card);border-bottom:1px solid var(--line)}
+.nav a:hover{border-color:var(--accent)}
+.back{font-size:12.5px;color:var(--soft);display:inline-block;margin-bottom:14px}
+footer{margin-top:46px;padding-top:14px;border-top:1px solid var(--line);color:var(--soft);font-size:11.5px;line-height:1.7}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:5px;background:rgba(168,121,47,.16);color:var(--gold);margin-left:5px}
+</style><title>创投圈观察 · Field Notes</title><a class="back" href="./">&larr; 返回目录</a>
+<h1>创投圈观察</h1>
+<p class="sub">来源：一位在美创投从业者的中文笔记（自述做过数年创投）。以下为提炼，非逐字引用。</p>
+
+<h2>一、应届生该不该去早期创业公司</h2>
+<div class="card">
+<b>回报侧的账</b><br>
+· 承担的是与创始人同级的<b>创业级风险</b>，拿到的却是创始团队的 <b>1/1000</b> 量级期权<br>
+· 在 cap table 上位置最靠后，即使公司成功，也大概率在多轮稀释中被磨平<br>
+· 退出端整体收紧：基金到期起诉自己投过的创始人、资本要控制权而非少数股权
+</div>
+<div class="card hl">
+<b>成长侧的判据（这条比钱重要）</b><br>
+<b>「应届生最值钱的资产是成长率曲线，而曲线只在有反馈的环境里复利。」</b><br><br>
+早期公司事务繁杂，基层新人往往<b>拿不到真正的 mentorship 和 oversight</b>。
+一个常见误解是「在小公司能野蛮生长」——但等公司熬过生存期准备扩张时会发现，
+<b>真正被付溢价的，是能把大组织掰弯的人</b>；而组织扩张期通常会空降高管，从 cap table 切走大块。
+</div>
+<div class="card ok">
+<b>什么情况下值得去</b><br>
+① 有兜底、输得起　② 顶级团队 + 明确的 PMF（那其实是「另一条确定性路径」）　③ 目标是两三年后自己创业
+</div>
+
+<h2>二、AI Lab 的不可能三角</h2>
+<div class="card">
+<b>基础设施需要中立（neutrality），平台需要锁定（lock-in），产品需要差异化（differentiation）—— 这三个商业逻辑天然互斥。</b><br><br>
+经典对照：AWS 不自己做 SaaS 产品，因为做了就没法让平台上的大客户信任它。<br>
+而当一家公司同时做底层 API、开发工具和终端产品时，它的每一层都在跟自己的客户抢生意。<br><br>
+客户会问的问题很直接：<b>「你今天帮我调模型，明天会不会出一个产品把我的业务吃掉？」</b><br>
+另有从业者提到的选型标准：<b>「如果这家明天倒闭了，我的业务能不能继续。」</b>——数据粘性回答不了这个问题。<br><br>
+<b>三个可能的终局</b>：拆层（牺牲增长）· 垂直化（让出市场）· 监管介入。
+</div>
+
+<h2>三、AI 应用层的毛利率之谜</h2>
+<div class="card">
+行业默认应用层会复制 SaaS 的<b>高增长 / 高粘性 / 高毛利</b>，融资材料里普遍写 <b>70% 毛利</b>。
+<b>但 SaaS 的 70% 背后有一整套前提，AI agent 一条都不占：</b>
+<table>
+<tr><th></th><th>SaaS</th><th>AI Agent</th></tr>
+<tr><td><b>成本端</b></td><td>infra 成本可预测，规模上去后单位成本下降</td><td>今天用昨天的模型价格做预算，明天对手上了更强的模型；<b>infra 越便宜，被迫消耗越多</b>——这不是成本管理，是军备竞赛</td></tr>
+<tr><td><b>收入端</b></td><td>per seat / usage-based / tiered，二十年跑通</td><td>按人头？AI 天然削减人力。按 token？凭什么为同样的模型付溢价。按结果？尚未跑通</td></tr>
+</table>
+<b>结论：用一套不可预测的成本，去撑一个还没跑通的收费模型，然后在纸上画一条从 SaaS 借来的 70%。</b>
+</div>
+
+<h2>四、垂直 AI 的护城河不是 data flywheel</h2>
+<div class="card">
+<b>「data flywheel（用得越多、数据越多、产品越强）是消费端的童话。」</b>
+消费端有海量同质用户，飞轮才转得动；而专业服务的工作是非标的、是灰区里的判断——
+<b>十个客户十种 know-how，喂进去大多是噪音。</b><br><br>
+<b>真正让企业级产品变强的是「蒸馏」</b>：把一个干了二十年的人的手感、踩过的坑，蒸馏进工具。<br>
+作者举的例子：某个广受好评的编码工具好用，<b>不是因为它收集了多少提交记录，而是因为写它的工程师把「自己怎么 debug、怎么读陌生代码库、第一步该干什么」那套流程蒸馏进了产品。</b><br>
+<span style="color:var(--soft)">同理：Salesforce 卖的是透明的协作流程，SAP 把一代 CFO 的管理范式焊死成了流程。</span>
+</div>
+
+<h2>五、风投是一个奖励欺骗（reward hacking）陷阱</h2>
+<div class="card">
+2016 年有篇论文设想了一台扫地机器人：目标设为「屋里看不见脏东西」，
+<b>它学会了直接关掉自己的摄像头——看不见，就等于干净。</b><br><br>
+Reward hacking 在机器学习里被反复复现，是<b>注定发生的现象</b>。
+作者的观察是：这一机制同样作用在投资行业本身——
+从业者被迫<b>在极少数幸存者身上过拟合</b>，最终分不清噪声和规律。<br><br>
+<b>「错过一个好 deal，是这行唯一被允许公开承认的错误。」</b>
+失败信号远多于成功信号，但失败不进访谈、不进下一支基金的募资材料。<br>
+<span style="color:var(--soft)">实用推论：看到「XX 融了多少 / 估值多少」的新闻，先问一句 DAU 是多少。</span>
+</div>
+
+<h2>六、硬件创业最常见的盲区</h2>
+<div class="card">
+作者见到的典型 pitch：<b>三十分钟讲 vision，五分钟讲 supply chain</b>。
+被问到打样、认证、量产时，回答是「这些可以 later stage 再解决」。<br><br>
+<b>「我最怕听到的就是 later stage。」</b><br>
+<b>「我尊重 vision，但 vision 只有在能造出来的时候才值钱。」</b><br><br>
+<span style="color:var(--soft)">给任何考虑硬件方向的人的尽调清单：打样在哪做、需要哪些认证、从样机到量产的良率与成本曲线。</span>
+</div>
+<footer>整理自公开来源的二手笔记。每条都标了出处；与原始说法有出入处已在正文注明。不含任何个人数据。<br>Source notes distilled from public posts. Attributions inline; corrections noted where sources conflict.</footer>

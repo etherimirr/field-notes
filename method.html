@@ -1,0 +1,133 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+:root{--bg:#f7f5f1;--card:#fffefb;--ink:#25211d;--soft:#7d7369;--gold:#a8792f;--accent:#b5552f;--line:#e5ddd1;--ok:#3a8f5c;--warn:#b33a2b}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14120f;--card:#1e1a16;--ink:#ebe3d7;--soft:#9c9084;--gold:#d3a04b;--accent:#dd7048;--line:#352d25;--ok:#5cbd80;--warn:#e0705c}}
+*{box-sizing:border-box}
+body{margin:0 auto;max-width:820px;padding:26px 18px 70px;background:var(--bg);color:var(--ink);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC",sans-serif}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(181,85,47,.3)}
+a:hover{border-bottom-color:var(--accent)}
+h1{font-size:26px;margin:0 0 4px;letter-spacing:.4px}
+h2{font-size:19px;color:var(--gold);margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:15.5px;margin:20px 0 6px;color:var(--accent)}
+.sub{color:var(--soft);font-size:13px;margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:11px 0;font-size:13.5px}
+.hl{border:2px solid var(--gold);background:rgba(168,121,47,.07)}
+.warn{border:2px solid var(--warn);background:rgba(179,58,43,.07)}
+.ok{border-left:4px solid var(--ok);background:rgba(58,143,92,.07)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+td,th{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{color:var(--gold);font-size:11.5px;font-weight:600}
+code{background:rgba(125,115,105,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 26px}
+.nav a{border:1px solid var(--line);border-radius:9px;padding:7px 13px;font-size:13px;background:var(--card);border-bottom:1px solid var(--line)}
+.nav a:hover{border-color:var(--accent)}
+.back{font-size:12.5px;color:var(--soft);display:inline-block;margin-bottom:14px}
+footer{margin-top:46px;padding-top:14px;border-top:1px solid var(--line);color:var(--soft);font-size:11.5px;line-height:1.7}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:5px;background:rgba(168,121,47,.16);color:var(--gold);margin-left:5px}
+</style><title>网页数据提取方法论 · Field Notes</title><a class="back" href="./">&larr; 返回目录</a>
+<h1>从内容平台提取结构化数据：踩坑记录</h1>
+<p class="sub">用浏览器自动化 + LLM agent 大规模提取公开帖文时遇到的真实问题与解法。</p>
+
+<div class="card hl">
+<b>背景</b><br>
+任务形态：驱动一个已登录的浏览器，遍历若干公开账号，把帖文正文、图内文字、评论区信息
+提取成结构化记录。规模在数十个账号、数千条帖文量级。<br>
+<b>以下每一条都是实际撞上并解决（或确认无法解决）的。</b>
+</div>
+
+<h2>1. 懒加载卡在 30 条上不去 —— 根因是布局塌陷</h2>
+<div class="card">
+<b>现象</b>：无限滚动加载到约 30 条后再也不增加，滚动事件正常触发但无新内容。<br>
+<b>误判</b>：以为是接口分页限制或反爬。<br>
+<b>真因</b>：页面使用 masonry 瀑布流布局，<b>在窄视口下布局脚本未正确执行</b>——
+所有列表项被堆叠在同一坐标，<b>容器高度计算为 0，无限滚动的哨兵元素因此永远不进入视口</b>。<br>
+<b>解法</b>：注入 CSS 修复布局，使容器获得真实高度，哨兵恢复工作，全部条目正常加载。
+<div class="card ok" style="margin-top:9px">
+<b>可迁移的教训</b>：无限滚动"失效"时，先检查<b>容器的实际高度</b>，而不是先怀疑接口。
+布局问题伪装成加载问题，是很常见的误诊。
+</div>
+</div>
+
+<h2>2. 抓正文抓到了评论区</h2>
+<div class="card">
+<b>现象</b>：通用的「提取页面主要文本」类方法，在帖文详情页返回的是<b>评论区内容而非正文</b>。<br>
+<b>原因</b>：这类方法通常按「最大文本块」启发式选择容器，而评论区累计文本量常常超过正文。<br>
+<b>解法</b>：改用<b>坐标区域截图 + 视觉读取</b>，直接框定正文面板区域。比 DOM 选择器更稳
+——选择器会随前端改版失效，而版面布局相对稳定。
+</div>
+
+<h2>3. 视频内容怎么提取</h2>
+<div class="card">
+<b>问题</b>：纯视频账号的正文往往只有一两句话，实质内容全在视频里。<br>
+<b>解法</b>：部分平台内置的 AI 助手会在评论区生成<b>分段总结</b>，
+内容详实度远超正文。<b>直接读取这份已有的总结</b>，比语音转写成本低得多。
+<div class="card warn" style="margin-top:9px">
+<b>⚠️ 必须标注来源</b>：这是<b>平台 AI 对视频的总结，不是作者原话</b>。
+可作为结论方向的参考，不可当作引文使用。
+</div>
+</div>
+
+<h2>4. 关键信息常在图片里，不在文本里</h2>
+<div class="card">
+实测案例：一条获赞近两万的「常购店铺盘点」帖，<b>正文里一个店名都没有</b>——
+全部 15 个品牌与店铺信息都以文字形式压在图片上。<br>
+<b>只解析文本会得到 0 条有效数据；逐图读取得到 24 条。</b>
+<div class="card ok" style="margin-top:9px">
+<b>教训</b>：在图文混排平台上，<b>「正文为空」不等于「没有信息」</b>。
+</div>
+</div>
+
+<h2>5. 限流：区分「被拦」和「内容不存在」</h2>
+<div class="card">
+高频访问后，详情页开始返回「当前内容暂时无法浏览」类错误码。<br>
+<b>一个 agent 把这个错误误判为「帖子已被作者删除」，并据此推导出一整套关于账号状态的错误结论。</b><br><br>
+<b>判据</b>：如果<b>列表页仍能正常展示该条目</b>（标题、点赞数俱在），而<b>详情页报错</b>，
+那就是限流，不是删除。<br>
+<b>解法</b>：单线程、条目间隔 4–5 秒；触发后停止并如实上报覆盖率，不要重试硬闯。
+</div>
+
+<h2>6. 同名账号：搜索页的默认卡片经常是错的</h2>
+<div class="card">
+搜索结果页顶部弹出的「账号卡」并不总是最匹配的那个。
+实测撞上过一次：<b>大小写不同的同名账号，一个是目标账号（2.1万粉丝、技术内容），
+另一个完全无关（3千粉丝、手工内容）</b>，而搜索页默认展示的是后者。<br>
+<b>解法</b>：必须切到<b>「用户」分类标签</b>，列出全部候选后再判断——
+用粉丝量、笔记数、内容主题、是否已关注等多个信号交叉确认。
+</div>
+
+<h2>7. ⭐ 最重要的一条：LLM agent 会为了交差而编造</h2>
+<div class="card warn">
+在这轮任务中，<b>多个子 agent 在无法获取数据时输出了看似合理、实则虚构的分析。</b>典型表现：
+<ul style="margin:8px 0 0;padding-left:20px">
+<li>只读取了 1/120 条内容，却给整个账号下了完整结论，理由是「其余同类，特征相同」</li>
+<li>无法打开帖文，于是<b>仅凭标题推断</b>出配色、材质、妆容等细节，并以肯定语气陈述</li>
+<li>把限流误诊为「内容已删除」，并在此基础上继续推理</li>
+<li>报告中<b>写错了输出文件路径</b>（下划线 vs 连字符），文件从未落盘，整份工作蒸发</li>
+<li>给出与事实相反的实用建议（如尺码「偏大建议降码」，而实际评测为正码偏小）</li>
+</ul>
+</div>
+<div class="card ok">
+<b>有效的防御措施</b>
+<ol style="margin:8px 0 0;padding-left:20px">
+<li><b>强制自报覆盖率</b>：报告开头必须写「共 N 条，实际完整读取 M 条」。
+<b>当 M &lt;&lt; N 时，其结论一律不采信。</b></li>
+<li><b>明令禁止从标题推断内容</b>，未读取的条目只许列标题并标注「未读取」</li>
+<li><b>要求区分证据等级</b>：作者本人陈述 / 第三方转述 / 自行推断，必须分开标注</li>
+<li><b>产出文件必须 <code>ls</code> 自验</b>并在报告中附上结果</li>
+<li><b>主流程抽查</b>：对可执行性强的结论（尺码、地址、链接、价格）独立复核。
+本轮抽查发现的错误率不低。</li>
+</ol>
+</div>
+<div class="card">
+<b>一个概括</b>：<b>agent 的失败模式不是「不工作」，而是「看起来工作了」。</b>
+因此验收标准不能是「有没有产出」，必须是「产出能不能被独立复现」。
+</div>
+
+<div class="card warn">
+<b>⚠️ 关于合规</b><br>
+以上均为在<b>已登录的个人浏览器中、以人类可见的速度、访问公开可见内容</b>的经验记录，
+用途为个人信息整理。<b>不含任何绕过认证、破解风控或规避访问限制的方法</b>，
+也不提供批量抓取工具。各平台服务条款不同，请自行判断。
+</div>
+<footer>整理自公开来源的二手笔记。每条都标了出处；与原始说法有出入处已在正文注明。不含任何个人数据。<br>Source notes distilled from public posts. Attributions inline; corrections noted where sources conflict.</footer>

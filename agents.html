@@ -1,0 +1,99 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+:root{--bg:#f7f5f1;--card:#fffefb;--ink:#25211d;--soft:#7d7369;--gold:#a8792f;--accent:#b5552f;--line:#e5ddd1;--ok:#3a8f5c;--warn:#b33a2b}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14120f;--card:#1e1a16;--ink:#ebe3d7;--soft:#9c9084;--gold:#d3a04b;--accent:#dd7048;--line:#352d25;--ok:#5cbd80;--warn:#e0705c}}
+*{box-sizing:border-box}
+body{margin:0 auto;max-width:820px;padding:26px 18px 70px;background:var(--bg);color:var(--ink);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC",sans-serif}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(181,85,47,.3)}
+a:hover{border-bottom-color:var(--accent)}
+h1{font-size:26px;margin:0 0 4px;letter-spacing:.4px}
+h2{font-size:19px;color:var(--gold);margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:15.5px;margin:20px 0 6px;color:var(--accent)}
+.sub{color:var(--soft);font-size:13px;margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:11px 0;font-size:13.5px}
+.hl{border:2px solid var(--gold);background:rgba(168,121,47,.07)}
+.warn{border:2px solid var(--warn);background:rgba(179,58,43,.07)}
+.ok{border-left:4px solid var(--ok);background:rgba(58,143,92,.07)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+td,th{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{color:var(--gold);font-size:11.5px;font-weight:600}
+code{background:rgba(125,115,105,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 26px}
+.nav a{border:1px solid var(--line);border-radius:9px;padding:7px 13px;font-size:13px;background:var(--card);border-bottom:1px solid var(--line)}
+.nav a:hover{border-color:var(--accent)}
+.back{font-size:12.5px;color:var(--soft);display:inline-block;margin-bottom:14px}
+footer{margin-top:46px;padding-top:14px;border-top:1px solid var(--line);color:var(--soft);font-size:11.5px;line-height:1.7}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:5px;background:rgba(168,121,47,.16);color:var(--gold);margin-left:5px}
+</style><title>AI Agent 的五张图 · Field Notes</title><a class="back" href="./">&larr; 返回目录</a>
+<h1>AI Agent 时代的五张「图」</h1>
+<p class="sub">Ontology / Knowledge Graph / Context Graph / Code Graph / Graph Engineering</p>
+
+<div class="card hl">
+<b>一句话总纲</b><br><b>前四张回答「系统知道什么」，第五张回答「系统怎么干活」。</b>
+</div>
+
+<h2>1. Ontology（本体）—— 规则书</h2>
+<div class="card">
+组织的<b>「标准术语表 + 家规」</b>。<b>不记录具体的人和事</b>，只规定概念如何定义、实体之间允许存在什么关系、哪些规则永远成立。
+相当于<b>字典和语法书的合体</b>，严格到机器可读。<br><br>
+核心价值是<b>统一语义口径</b>，让多团队多系统对齐；并且能让系统<b>自动推理出新结论</b>（例如从既有关系推出「某药可治某病」）。
+金融、医药领域有成熟的开源本体可直接用。
+</div>
+
+<h2>2. Knowledge Graph（知识图谱）—— 世界网</h2>
+<div class="card">
+照着本体的「规范」<b>盖出来的房子</b>：把真实的人和事填进去，织成一张 <b>「谁—什么关系—什么」</b> 的网。
+像一本长了神经的百科全书，既能查条目、也能顺着关系一路问下去。<br><br>
+适合常识问答与推荐。<b style="color:var(--warn)">短板：它只知道「全世界普遍为真的事」，不知道某个组织此刻正在发生什么。</b>
+</div>
+
+<h2>3. Context Graph（上下文图谱）—— 任务上下文地图</h2>
+<div class="card">
+在知识图谱基础上<b>叠加任务、状态、事件、历史决策</b>，形成面向 agent 决策的「业务上下文地图」，
+回答的是 <b>「当前为什么重要、该怎么做决策」</b>。<br><br>
+分三层：<b>① 语义基础　② 运行元数据</b>（数据血缘、质量、权限）<b>　③ 决策轨迹</b>。<br>
+适用场景：agent 正式接手业务前的<b>可信上下文构建、影响分析、审计合规追溯</b>。
+<div class="ok card" style="margin-top:10px">
+<b>这一层是 demo 级和企业级 agent 的分水岭。</b><br>
+多数个人项目把「agent 做过什么决定、为什么这么决定」留在日志里。
+把<b>决策轨迹变成可查询的结构</b>，是最能拉开差距的一步。
+</div>
+</div>
+
+<h2>4. Code Graph（代码图谱）—— 代码内部管网图</h2>
+<div class="card">
+把软件系统画成一张<b>可查询的图</b>：函数、类、模块是<b>节点</b>；谁调用谁、数据怎么流、谁继承谁是<b>边</b>。
+改代码前先顺着图看「下游谁会受影响」。适合大型代码库的关系梳理与风险预演。
+</div>
+
+<h2>5. Graph Engineering（图谱工程）—— Agent 的轨道</h2>
+<div class="card">
+<b>和前四张完全不同 —— 它回答「怎么干活」。</b><br><br>
+本质是<b>给大模型装上轨道</b>：<b>入口处让 agent 自己判断，其余路段按既定轨道走</b>，既保留自由度又保证可靠性。
+包含数据工程、图谱建模、检索、推理、agent 编排等要素。适合<b>有固定套路的业务流程和多 agent 协同</b>。
+<div class="card ok" style="margin-top:10px">
+这句话顺带回答了一个常见问题：<b>为什么要用图编排框架，而不是让模型自由循环。</b>
+</div>
+</div>
+
+<h2>领域映射</h2>
+<div class="card">
+来源作者给的对照：<b>做医疗 AI 的会更多用到 Ontology + FHIR；做电商推荐的则 Knowledge Graph + Context Graph 更关键。</b><br>
+<span style="color:var(--soft)">→ 评估一家公司最需要哪张图，比背全五张更有用。</span>
+</div>
+
+<div class="card warn">
+<b>⚠️ 来源与可信度</b><br>
+以上五段来自一条 12 分钟中文视频的 <b>平台内置 AI 分段总结</b>（非作者原话逐字稿），我逐屏读完并誊写。
+<b>结论方向可信，具体措辞若要引用请回看原视频。</b><br>
+作者自述身份为 <b>AI FDE（Forward Deployed Engineer）</b>，此前经历为数学科学家 → 算法工程师 → AI 解决方案。
+</div>
+
+<h2>附：FDE 这个岗位</h2>
+<div class="card">
+<b>Forward Deployed Engineer</b> 由 Palantir 提出并规模化，近年 OpenAI、Anthropic 等公司亦在招募。
+特点是<b>工程能力 + 直接进客户现场解决问题</b>，介于解决方案架构师与产品工程师之间。
+本站整理的两个独立中文信息源都提到了这个岗位方向。
+</div>
+<footer>整理自公开来源的二手笔记。每条都标了出处；与原始说法有出入处已在正文注明。不含任何个人数据。<br>Source notes distilled from public posts. Attributions inline; corrections noted where sources conflict.</footer>
